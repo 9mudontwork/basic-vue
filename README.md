@@ -18,7 +18,7 @@
 
 # จะ comment มั่วๆ ทุกๆอย่าง กันลืมไว้ข้างล่าง
 
-**Vuex หรือ ตัวจัดการ Store**
+### Vuex หรือ ตัวจัดการ Store
 
 vuex เป็นตัวกลางใช้สำหรับการจัดการ สถานะทุกๆอย่างที่เกิดขึ้นในแอพเรา\
 ดูได้จาก Doc https://vuex.vuejs.org/guide/
@@ -34,7 +34,8 @@ getters ใช้สำหรับดึงข้อมูล state\
 ดูได้จาก Doc https://vuex.vuejs.org/api/#vuex-store-instance-methods\
 
 
-**vue-router หรือ ตัวจัดการ เพจ url**
+
+### vue-router หรือ ตัวจัดการ เพจ url
 
 beforeEnter คือการตั้ง Guard เฉพาะในแต่ละ route ดู Doc ได้ที่ https://router.vuejs.org/guide/advanced/navigation-guards.html#per-route-guard\
 
