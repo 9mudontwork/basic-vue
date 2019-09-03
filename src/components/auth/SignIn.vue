@@ -5,7 +5,7 @@
       จะมี event modifiers ด้วย ดู Doc จาก https://vuejs.org/v2/guide/events.html#Event-Modifiers
       v-model เป็นการผูก text fields กับตัวแปร
     -->
-    <form class="form-signin needs-validation" novalidate v-on:submit.prevent="validate">
+    <form class="form-signin needs-validation" novalidate v-on:submit.prevent="onSignIn">
       <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">Sign In</h1>
       </div>
@@ -35,14 +35,22 @@
         />
       </div>
 
-      <div class="checkbox mb-3"></div>
-
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+
+      <div v-if="error">
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+          <a v-text="error.message"></a>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
+import { watch } from "fs";
 // export default ส่วนนี้คือ Computed Properties and Watchers
 // ดู Doc ได้จาก https://vuejs.org/v2/guide/computed.html
 // มี data เหมาะกับตัวแปร
@@ -59,10 +67,6 @@ export default {
   },
 
   methods: {
-    validate() {
-      this.onSignIn();
-    },
-
     // $store เรียก store แบบ global
     // dispatch คือการเรียก action ใน component จาก store เพื่อเรียก method ที่ต้องการ แล้วโยน payload เข้าไป
     // ดูได้จาก doc https://vuex.vuejs.org/guide/actions.html#dispatching-actions-in-components
@@ -73,11 +77,32 @@ export default {
         email: this.email,
         password: this.password
       };
-      this.$store.dispatch("firebaseAuth/signIn", user);
+      this.$store.dispatch("signIn", user);
+      // this.$store.dispatch("firebaseAuth/signIn", user);
     }
   },
 
-  computed: {}
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    },
+
+    error() {
+      return this.$store.getters.error;
+    },
+
+    status() {
+      return this.$store.getters.loading;
+    }
+  },
+
+  watch: {
+    user(value) {
+      if (value !== null && value !== undefined) {
+        this.$router.push("/profile");
+      }
+    }
+  }
 };
 </script>
 

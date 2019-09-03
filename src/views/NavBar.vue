@@ -77,14 +77,14 @@ export default {
   // methods
   methods: {
     onSignOut() {
-      this.$store.dispatch("firebaseAuth/signOut");
+      this.$store.dispatch("signOut");
     }
   },
 
   // computed
   computed: {
     userSignedIn() {
-      const user = this.$store.getters["firebaseAuth/user"];
+      const user = this.$store.getters["user"];
       if (user == null || user == undefined) {
         return false;
       } else {

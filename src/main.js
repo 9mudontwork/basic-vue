@@ -16,7 +16,7 @@ const unSignIn = firebase.auth().onAuthStateChanged(user => {
     store,
     render: h => h(App),
     created() {
-      this.$store.dispatch("firebaseAuth/autoSignIn", user);
+      this.$store.dispatch("autoSignIn", user);
     }
   }).$mount("#app");
   unSignIn();

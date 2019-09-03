@@ -1,41 +1,45 @@
 <template>
   <div class="container">
-    <form class="form-signin">
+    <form class="form-signin" v-on:submit.prevent="onSignUp">
       <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
       </div>
 
       <div class="form-group">
-        <label for="inputEmail">Email address</label>
+        <label for="email">Email address</label>
         <input
           type="text"
-          id="inputEmail"
+          id="email"
           class="form-control"
           placeholder="Email address"
           required
           autofocus
+          v-model="email"
         />
       </div>
 
       <div class="form-group">
-        <label for="inputPassword">Password</label>
+        <label for="password">Password</label>
         <input
           type="text"
-          id="inputPassword"
+          id="password"
           class="form-control"
           placeholder="Password"
           required
+          v-model="password"
         />
       </div>
 
       <div class="form-group">
-        <label for="inputConfirmPassword">ConfirmPassword</label>
+        <label for="confirmPassword">ConfirmPassword</label>
         <input
           type="password"
-          id="inputConfirmPassword"
+          id="confirmPassword"
           class="form-control"
           placeholder="Password"
           required
+          v-model="confirmPassword"
+          :rules="[comparePasswords]"
         />
       </div>
 
@@ -46,7 +50,50 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      email: "",
+      password: "",
+      confirmPassword: ""
+    };
+  },
+
+  computed: {
+    comparePasswords() {
+      if (this.password === this.confirmPassword) {
+        return true;
+      } else {
+        return "Password and Confirm Password don't match";
+      }
+    },
+
+    user() {
+      return this.$store.getters.user;
+    }
+  },
+
+  watch: {
+    user(value) {
+      if (value !== null && value !== undefined) {
+        console.log(value);
+      }
+    }
+  },
+
+  methods: {
+    onSignUp() {
+      if (this.comparePasswords == true) {
+        this.$store.dispatch("firebaseAuth/signUp", {
+          email: this.email,
+          password: this.password
+        });
+      } else {
+        console.log(this.comparePasswords);
+      }
+    }
+  }
+};
 </script>
 
 <style>
