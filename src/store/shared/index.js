@@ -3,12 +3,16 @@ export default {
 
   state: {
     loading: false,
+    status: null,
     error: null
   },
 
   mutations: {
     setLoading(state, payload) {
       state.loading = payload;
+    },
+    setStatus(state, payload) {
+      state.status = payload;
     },
     setError(state, payload) {
       state.error = payload;
@@ -30,6 +34,9 @@ export default {
   getters: {
     loading(state) {
       return state.loading;
+    },
+    status(state) {
+      return state.status;
     },
     error(state) {
       return state.error;
