@@ -6,7 +6,17 @@ import store from "./store";
 import firebase from "firebase";
 import { firebaseConfig } from "./configs/firebase/firebaseConfig";
 
+import VeeValidate from "vee-validate";
+
 Vue.config.productionTip = false;
+
+Vue.use(VeeValidate, {
+  classes: true,
+  classNames: {
+    valid: "is-valid",
+    invalid: "is-invalid"
+  }
+});
 
 firebase.initializeApp(firebaseConfig);
 
@@ -21,20 +31,3 @@ const unSignIn = firebase.auth().onAuthStateChanged(user => {
   }).$mount("#app");
   unSignIn();
 });
-
-// new Vue({
-//   router,
-//   store,
-//   render: h => h(App),
-//   created() {
-//     firebase.auth().onAuthStateChanged(user => {
-//       if (user) {
-//         this.$store.dispatch("firebaseAuth/autoSignIn", user);
-//       }
-//     });
-//   }
-// }).$mount("#app");
-
-// created เป็น Instance Lifecycle Hook ของ Vue จะทำงานก่อน render
-// ดูจาก Doc https://vuejs.org/v2/guide/instance.html#Instance-Lifecycle-Hooks
-// ในหน้านี้ทำเพื่อเช็คว่ามีการ login ของ firebase ไว้อยู่รึป่าว ถ้าใช่ให้ dispatch

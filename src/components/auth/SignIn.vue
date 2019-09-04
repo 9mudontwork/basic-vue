@@ -1,37 +1,55 @@
 <template>
   <div class="container">
-    <form class="form-signin needs-validation" novalidate v-on:submit.prevent="onSignIn">
+    <!-- form -->
+    <form
+      class="form-signin needs-validation"
+      autocomplete="off"
+      v-on:submit.prevent="validateBeforeSubmit"
+    >
       <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">Sign In</h1>
       </div>
 
+      <!-- email -->
       <div class="form-group">
-        <label for="inputEmail">Email address</label>
+        <label>Email</label>
         <input
-          type="text"
-          id="inputEmail"
+          type="email"
+          id="email"
+          name="email"
           class="form-control"
-          placeholder="Email address"
-          required
+          placeholder="Email"
           autofocus
           v-model="email"
+          v-validate="'required|email'"
         />
+
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">{{ errors.first("email") }}</div>
       </div>
 
+      <!-- password -->
       <div class="form-group">
-        <label for="inputPassword">Password</label>
+        <label>Password</label>
         <input
           type="password"
-          id="inputPassword"
+          id="password"
+          name="password"
           class="form-control"
           placeholder="Password"
-          required
+          autocomplete="off"
           v-model="password"
+          v-validate="'required|min:6'"
         />
+
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">{{ errors.first("password") }}</div>
       </div>
 
+      <!-- submit -->
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
 
+      <!-- alert box -->
       <div v-if="error">
         <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
           <a v-text="error.message"></a>
@@ -54,12 +72,22 @@ export default {
   },
 
   methods: {
-    onSignIn() {
+    doSignIn() {
       const user = {
         email: this.email,
         password: this.password
       };
       this.$store.dispatch("signIn", user);
+    },
+
+    validateBeforeSubmit() {
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          alert("Success");
+        } else {
+          alert("Fail");
+        }
+      });
     }
   },
 
