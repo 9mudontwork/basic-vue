@@ -14,7 +14,7 @@
       <div class="form-group">
         <label>Email</label>
         <input
-          type="email"
+          type="text"
           id="email"
           name="email"
           class="form-control"
@@ -25,7 +25,7 @@
         />
 
         <div class="valid-feedback">Looks good!</div>
-        <div class="invalid-feedback">{{ errors.first("email") }}</div>
+        <div class="invalid-feedback" v-show="errors.has('email')">{{ errors.first("email") }}</div>
       </div>
 
       <!-- password -->
@@ -37,13 +37,12 @@
           name="password"
           class="form-control"
           placeholder="Password"
-          autocomplete="off"
           v-model="password"
           v-validate="'required|min:6'"
         />
 
         <div class="valid-feedback">Looks good!</div>
-        <div class="invalid-feedback">{{ errors.first("password") }}</div>
+        <div class="invalid-feedback" v-show="errors.has('password')">{{ errors.first("password") }}</div>
       </div>
 
       <!-- submit -->
@@ -66,8 +65,8 @@
 export default {
   data() {
     return {
-      email: "",
-      password: ""
+      email: null,
+      password: null
     };
   },
 
@@ -81,13 +80,16 @@ export default {
     },
 
     validateBeforeSubmit() {
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          alert("Success");
-        } else {
-          alert("Fail");
-        }
-      });
+      this.$validator
+        .validateAll({
+          email: this.email,
+          password: this.password
+        })
+        .then(result => {
+          if (result) {
+            alert("Success");
+          }
+        });
     }
   },
 

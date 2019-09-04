@@ -10,16 +10,16 @@ import VeeValidate from "vee-validate";
 
 Vue.config.productionTip = false;
 
-Vue.use(VeeValidate, {
+const veeValidationConfig = {
   classes: true,
   classNames: {
     valid: "is-valid",
     invalid: "is-invalid"
   }
-});
+};
+Vue.use(VeeValidate, veeValidationConfig);
 
 firebase.initializeApp(firebaseConfig);
-
 const unSignIn = firebase.auth().onAuthStateChanged(user => {
   new Vue({
     router,
