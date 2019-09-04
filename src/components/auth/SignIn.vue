@@ -87,7 +87,7 @@ export default {
         })
         .then(result => {
           if (result) {
-            alert("Success");
+            this.doSignIn();
           }
         });
     }
