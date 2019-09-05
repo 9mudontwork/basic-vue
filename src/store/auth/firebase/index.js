@@ -1,4 +1,5 @@
 import firebase from "firebase";
+import router from "@/router";
 
 export default {
   state: {
@@ -32,6 +33,7 @@ export default {
     },
 
     signOut({ commit }) {
+      commit("setLoading", true);
       commit("clearError");
 
       firebase
@@ -39,9 +41,14 @@ export default {
         .signOut()
         .then(() => {
           commit("setUser", null);
+          commit("setLoading", false);
+          commit("setStatus", "success");
+
+          router.push("/signin");
         })
         .catch(error => {
           commit("setLoading", false);
+          commit("setStatus", "fail");
           commit("setError", error);
         });
     },
