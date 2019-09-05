@@ -8,11 +8,14 @@
 >firebase ฐานข้อมูล <br>
 >vee-validate 2 ตัว validation form <br>
 
+เสียเวลาไปกับการ research ซะส่วนใหญ่
+
 **กำลังทำ**
 * login logout register
 * form validate
 
 **ที่จะทำ**
+* ใส่ reCaptcha ใน login register
 * ระบบสมาชิก ข้อมูลสมาชิก
 * แก้ไขข้อมูลสมาชิก
 * อัพโหลดรูป แก้ไขรูป สมาชิก

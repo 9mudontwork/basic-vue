@@ -20,8 +20,9 @@ export default {
         .auth()
         .signInWithEmailAndPassword(payload.email, payload.password)
         .then(response => {
-          commit("setUser", response);
+          commit("setLoading", false);
           commit("setStatus", "success");
+          commit("setUser", response);
         })
         .catch(error => {
           commit("setLoading", false);
@@ -31,7 +32,6 @@ export default {
     },
 
     signOut({ commit }) {
-      commit("setLoading", true);
       commit("clearError");
 
       firebase

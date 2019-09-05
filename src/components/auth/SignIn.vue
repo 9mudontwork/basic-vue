@@ -24,7 +24,7 @@
           v-validate="'required|email'"
         />
 
-        <div class="valid-feedback">Looks good!</div>
+        <!-- <div class="valid-feedback">Looks good!</div> -->
         <div class="invalid-feedback" v-show="errors.has('email')">{{ errors.first("email") }}</div>
       </div>
 
@@ -41,12 +41,15 @@
           v-validate="'required|min:6'"
         />
 
-        <div class="valid-feedback">Looks good!</div>
+        <!-- <div class="valid-feedback">Looks good!</div> -->
         <div class="invalid-feedback" v-show="errors.has('password')">{{ errors.first("password") }}</div>
       </div>
 
       <!-- submit -->
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+      <button class="btn btn-primary btn-block" type="submit" :disabled="loading">
+        <span class="spinner-border spinner-border-sm" v-show="loading"></span>
+        <span v-text="loading ? ' loading...':'Sign In'"></span>
+      </button>
 
       <!-- alert box -->
       <div v-if="error">
@@ -103,6 +106,10 @@ export default {
     },
 
     status() {
+      return this.$store.getters.status;
+    },
+
+    loading() {
       return this.$store.getters.loading;
     }
   },
