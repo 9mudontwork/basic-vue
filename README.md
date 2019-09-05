@@ -10,10 +10,15 @@
 
 เสียเวลาไปกับการ research ซะส่วนใหญ่
 
+**ทำไปแล้ว**
+
+- login มี validation
+- logout
+- เช็ค ห้าม login หรือ signup ถ้า login ไปแล้ว
+
 **กำลังทำ**
 
-- login logout register
-- form validate
+- register และ เช็ค validation
 
 **ที่จะทำ**
 
