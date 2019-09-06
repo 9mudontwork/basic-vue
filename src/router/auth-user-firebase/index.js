@@ -2,11 +2,11 @@ import firebase from "firebase";
 
 export default (to, from, next) => {
   const user = firebase.auth().currentUser,
-    toPage = to.name,
+    toAuthPage = to.name == "signin" || to.name == "signup" ? true : false,
     dontSignInAgain = to.matched.some(record => record.meta.dontSignInAgain);
 
   if (!user) {
-    if (toPage == "signin" || toPage == "signup") {
+    if (toAuthPage) {
       next();
       return;
     }
