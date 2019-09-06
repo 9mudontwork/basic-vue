@@ -58,17 +58,21 @@ export default {
     },
 
     signUp({ commit }, payload) {
+      commit("setLoading", true);
+      commit("clearError");
+
       firebase
         .auth()
         .createUserWithEmailAndPassword(payload.email, payload.password)
         .then(response => {
-          commit("setUser", response);
+          commit("setLoading", false);
           commit("setStatus", "success");
-          commit("setError", null);
+          commit("setUser", response);
         })
         .catch(error => {
+          commit("setLoading", false);
           commit("setStatus", "fail");
-          commit("setError", error.message);
+          commit("setError", error);
         });
     }
   },

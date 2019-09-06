@@ -5,7 +5,6 @@ import authUserFirebase from "./auth-user-firebase";
 
 Vue.use(Router);
 
-// สร้าง object component ทั้งหมด
 const routerOptions = [
   {
     path: "/",

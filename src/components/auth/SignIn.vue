@@ -22,9 +22,9 @@
           autofocus
           v-model="email"
           v-validate="'required|email'"
+          data-vv-as="Email"
         />
 
-        <!-- <div class="valid-feedback">Looks good!</div> -->
         <div class="invalid-feedback" v-show="errors.has('email')">{{ errors.first("email") }}</div>
       </div>
 
@@ -39,9 +39,9 @@
           placeholder="Password"
           v-model="password"
           v-validate="'required|min:6'"
+          data-vv-as="Password"
         />
 
-        <!-- <div class="valid-feedback">Looks good!</div> -->
         <div class="invalid-feedback" v-show="errors.has('password')">{{ errors.first("password") }}</div>
       </div>
 
