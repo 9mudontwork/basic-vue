@@ -3,13 +3,12 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
-import firebase from "firebase";
-import { firebaseConfig } from "./configs/firebase/firebaseConfig";
-
-import VeeValidate from "vee-validate";
+import firebase from "./configs/firebase/firebaseInit";
 
 Vue.config.productionTip = false;
 
+// vee validate
+import VeeValidate from "vee-validate";
 const veeValidationConfig = {
   classes: true,
   classNames: {
@@ -19,7 +18,6 @@ const veeValidationConfig = {
 };
 Vue.use(VeeValidate, veeValidationConfig);
 
-firebase.initializeApp(firebaseConfig);
 const unSignIn = firebase.auth().onAuthStateChanged(user => {
   new Vue({
     router,

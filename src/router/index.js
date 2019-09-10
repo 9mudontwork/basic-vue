@@ -28,7 +28,7 @@ const routerOptions = [
   {
     path: "/profile",
     name: "profile",
-    component: "components/auth/Profile",
+    component: "components/user/Profile",
     beforeEnter: authUserFirebase
   }
 ];
