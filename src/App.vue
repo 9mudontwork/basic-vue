@@ -1,21 +1,23 @@
 <template>
-  <div>
+  <v-app>
     <nav-bar />
-    <!-- ไปดูที่ Navbar.vue -->
-    <router-view />
-    <!-- ไปดูที่ file router.js -->
-  </div>
-  <!-- html ของ vue ต้องเริ่มด้วย template ตลอดแล้วครอบด้วย div -->
+
+    <v-content>
+      <router-view />
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import NavBar from "./views/NavBar";
+import NavBar from "./components/shared/NavBar";
 
-// nav-bar == NavBar
 export default {
   name: "App",
   components: {
     NavBar
-  }
+  },
+  data: () => ({
+    //
+  })
 };
 </script>

@@ -1,67 +1,47 @@
 <template>
-  <div class="container">
-    <!-- form -->
-    <form
-      class="form-signin needs-validation"
-      autocomplete="off"
-      v-on:submit.prevent="validateBeforeSubmit"
-    >
+  <v-container>
+    <form class="form-signin" autocomplete="off" v-on:submit.prevent="validateBeforeSubmit">
       <div class="text-center mb-4">
-        <h1 class="h3 mb-3 font-weight-normal">Sign In</h1>
+        <h1 class="display-1 font-weight-bold mb-3">Sign In</h1>
       </div>
 
-      <!-- email -->
-      <div class="form-group">
-        <label>Email</label>
-        <input
-          type="text"
-          id="email"
-          name="email"
-          class="form-control"
-          placeholder="Email"
-          autofocus
-          v-model="email"
-          v-validate="'required|email'"
-          data-vv-as="Email"
-        />
+      <v-text-field
+        v-model="email"
+        v-validate="'required|email'"
+        :error-messages="errors.collect('email')"
+        label="Email"
+        name="email"
+        required
+        autofocus
+      ></v-text-field>
 
-        <div class="invalid-feedback" v-show="errors.has('email')">{{ errors.first("email") }}</div>
+      <v-text-field
+        v-model="password"
+        v-validate="'required|min:6'"
+        :error-messages="errors.collect('password')"
+        label="Password"
+        type="password"
+        name="password"
+        required
+      ></v-text-field>
+
+      <div class="d-flex justify-end mt-2 mb-6">
+        <v-btn block type="submit" :disabled="loading" :loading="loading">Login</v-btn>
       </div>
 
-      <!-- password -->
-      <div class="form-group">
-        <label>Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          class="form-control"
-          placeholder="Password"
-          v-model="password"
-          v-validate="'required|min:6'"
-          data-vv-as="Password"
-        />
-
-        <div class="invalid-feedback" v-show="errors.has('password')">{{ errors.first("password") }}</div>
-      </div>
-
-      <!-- submit -->
-      <button class="btn btn-primary btn-block" type="submit" :disabled="loading">
-        <span class="spinner-border spinner-border-sm" v-show="loading"></span>
-        <span v-text="loading ? ' loading...':'Sign In'"></span>
-      </button>
-
-      <!-- alert box -->
-      <div v-if="error">
-        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-          <a v-text="error.message"></a>
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      </div>
+      <v-alert
+        v-if="error"
+        close-text="Close Alert"
+        type="error"
+        outlined
+        dark
+        dismissible
+        @input="clearError"
+      >
+        <span v-text="error.message"></span>
+      </v-alert>
     </form>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -93,6 +73,10 @@ export default {
             this.doSignIn();
           }
         });
+    },
+
+    clearError() {
+      this.$store.dispatch("clearError");
     }
   },
 
