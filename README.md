@@ -7,6 +7,7 @@
 > vuex จัดการ store <br>
 > firebase ฐานข้อมูล <br>
 > vee-validate 2 ตัว validation form <br>
+> theme vuetify <br>
 
 เสียเวลาไปกับการ research ซะส่วนใหญ่
 
