@@ -1,6 +1,30 @@
 <template>
   <div>
-    <v-app-bar color="grey darken-4" dark>
+    <v-navigation-drawer app v-model="drawer">
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">AAAAA</v-list-item-title>
+          <v-list-item-subtitle>Admin</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list dense>
+        <v-list-item v-for="item in dashboardMenu" :key="item.title" link>
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar app>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Basic Vue</v-toolbar-title>
 
       <div class="flex-grow-1"></div>
@@ -44,19 +68,56 @@
         </v-btn>
       </div>
     </v-app-bar>
+
+    <v-content>
+      <v-container class="fill-height">
+        <v-row>
+          <v-col cols="12" md="7" sm="6">
+            <v-card>
+              <v-card-title>I'm a title</v-card-title>
+              <v-card-text>I'm card text</v-card-text>
+              <v-card-actions>
+                <v-btn text>Click</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="5" sm="6">
+            <v-card>
+              <v-card-title>I'm a title</v-card-title>
+              <v-card-text>I'm card text</v-card-text>
+              <v-card-actions>
+                <v-btn text>Click</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-content>
+
+    <v-footer app>
+      <span class="white--text">&copy; 2019</span>
+    </v-footer>
+
+    <v-content>
+      <slot></slot>
+    </v-content>
   </div>
 </template>
 
 <script>
 export default {
-  // methods
+  data() {
+    return {
+      drawer: null
+    };
+  },
+
   methods: {
     doSignOut() {
       this.$store.dispatch("signOut");
     }
   },
 
-  // computed
   computed: {
     userSignedIn() {
       const user = this.$store.getters["user"];
@@ -91,6 +152,15 @@ export default {
           icon: "mdi-account",
           link: "/profile"
         }
+      ];
+      return this.userSignedIn ? menuItems : [];
+    },
+
+    dashboardMenu() {
+      let menuItems = [
+        { title: "Dashboard", icon: "mdi-view-dashboard" },
+        { title: "Photos", icon: "mdi-image" },
+        { title: "About", icon: "mdi-help-box" }
       ];
       return this.userSignedIn ? menuItems : [];
     }

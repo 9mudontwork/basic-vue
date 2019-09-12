@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import router from "@/router";
+import router from "@/router/path";
 
 export default {
   state: {

@@ -1,11 +1,18 @@
-<template>
-  <div class="container">
-    <h1>Profile</h1>
-  </div>
-</template>
+<template></template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      items: [
+        { title: "Dashboard", icon: "mdi-view-dashboard" },
+        { title: "Photos", icon: "mdi-image" },
+        { title: "About", icon: "mdi-help-box" }
+      ],
+      right: null
+    };
+  }
+};
 </script>
 
 <style>

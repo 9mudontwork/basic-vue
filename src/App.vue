@@ -1,23 +1,26 @@
 <template>
   <v-app>
-    <nav-bar />
-
-    <v-content>
-      <router-view />
-    </v-content>
+    <component :is="navbarLayout">
+      <router-view></router-view>
+    </component>
   </v-app>
 </template>
 
 <script>
-import NavBar from "./components/shared/NavBar";
+const navbarLayout = "frontend";
 
 export default {
   name: "App",
-  components: {
-    NavBar
-  },
-  data: () => ({
-    //
-  })
+
+  computed: {
+    userSignedIn() {
+      const user = this.$store.getters["user"];
+      return user == null || user == undefined ? false : true;
+    },
+
+    navbarLayout() {
+      return "navbar-" + (this.$route.meta.navbarLayout || navbarLayout);
+    }
+  }
 };
 </script>

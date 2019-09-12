@@ -9,13 +9,13 @@ const routerOptions = [
   {
     path: "/",
     name: "Home",
-    component: "views/Home"
+    component: "components/HelloWorld"
   },
   {
     path: "/signin",
     name: "signin",
     component: "components/auth/SignIn",
-    meta: { dontSignInAgain: true },
+    meta: { dontSignInAgain: true, navbarLayout: "frontend" },
     beforeEnter: authUserFirebase
   },
   {
@@ -29,6 +29,7 @@ const routerOptions = [
     path: "/profile",
     name: "profile",
     component: "components/user/Profile",
+    meta: { navbarLayout: "dashboard" },
     beforeEnter: authUserFirebase
   }
 ];
