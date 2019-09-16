@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar>
-      <v-toolbar-title>Basic Vue</v-toolbar-title>
+      <v-toolbar-title v-text="titleBar"></v-toolbar-title>
 
       <div class="flex-grow-1"></div>
 
@@ -62,6 +62,10 @@ export default {
 
   // computed
   computed: {
+    titleBar() {
+      return this.$store.getters.titleBar;
+    },
+
     userSignedIn() {
       const user = this.$store.getters["user"];
       if (user == null || user == undefined) {

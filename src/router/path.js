@@ -1,14 +1,14 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import authUserFirebase from "./auth-user-firebase";
+import authFirebaseRoute from "./firebase/authFirebaseRoute";
 
 Vue.use(Router);
 
 const routerOptions = [
   {
     path: "/",
-    name: "Home",
+    name: "home",
     component: "components/HelloWorld"
   },
   {
@@ -16,21 +16,21 @@ const routerOptions = [
     name: "signin",
     component: "components/auth/SignIn",
     meta: { dontSignInAgain: true, navbarLayout: "frontend" },
-    beforeEnter: authUserFirebase
+    beforeEnter: authFirebaseRoute
   },
   {
     path: "/signup",
     name: "signup",
     component: "components/auth/SignUp",
     meta: { dontSignInAgain: true },
-    beforeEnter: authUserFirebase
+    beforeEnter: authFirebaseRoute
   },
   {
     path: "/profile",
     name: "profile",
     component: "components/user/Profile",
     meta: { navbarLayout: "dashboard" },
-    beforeEnter: authUserFirebase
+    beforeEnter: authFirebaseRoute
   }
 ];
 

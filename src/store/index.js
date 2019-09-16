@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import firebaseAuth from "./auth/firebase";
-import shared from "./shared";
+import firebaseAuthStore from "./auth/firebase/firebaseAuthStore";
+import sharedStore from "./sharedStore";
 
 Vue.use(Vuex);
 
@@ -12,8 +12,8 @@ export default new Vuex.Store({
   // actions: {},
   // getters: {}
   modules: {
-    firebaseAuth: firebaseAuth,
-    shared: shared
+    firebaseAuthStore: firebaseAuthStore,
+    sharedStore: sharedStore
   }
 });
 

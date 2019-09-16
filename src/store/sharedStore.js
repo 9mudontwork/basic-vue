@@ -2,12 +2,16 @@ export default {
   //   namespaced: true,
 
   state: {
+    titleBar: "Basic Vue",
     loading: false,
     status: null,
     error: null
   },
 
   mutations: {
+    setTitleBar(state, payload) {
+      state.titleBar = payload;
+    },
     setLoading(state, payload) {
       state.loading = payload;
     },
@@ -28,10 +32,16 @@ export default {
     },
     setError({ commit }, payload) {
       commit("setError", payload);
+    },
+    setTitleBar({ commit }, payload) {
+      commit("setTitleBar", payload);
     }
   },
 
   getters: {
+    titleBar(state) {
+      return state.titleBar;
+    },
     loading(state) {
       return state.loading;
     },
