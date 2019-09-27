@@ -13,6 +13,7 @@
         label="Email"
         data-vv-as="Email"
         name="email"
+        placeholder="example@example.com"
         required
         autofocus
       ></v-text-field>
@@ -60,6 +61,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -69,7 +71,7 @@ export default {
     };
   },
 
-  computed: {
+  computed: mapState({
     comparePasswords() {
       if (this.password === this.confirmPassword) {
         return true;
@@ -78,22 +80,10 @@ export default {
       }
     },
 
-    user() {
-      return this.$store.getters.user;
-    },
-
-    error() {
-      return this.$store.getters.error;
-    },
-
-    status() {
-      return this.$store.getters.status;
-    },
-
-    loading() {
-      return this.$store.getters.loading;
-    }
-  },
+    user: state => state.firebaseAuthStore.user,
+    error: state => state.firebaseAuthStore.error,
+    loading: state => state.firebaseAuthStore.loading
+  }),
 
   watch: {
     user(value) {
@@ -110,7 +100,7 @@ export default {
           email: this.email,
           password: this.password
         };
-        this.$store.dispatch("signUp", user);
+        this.$store.dispatch("firebaseAuthStore/signUp", user);
       }
     },
 
@@ -129,7 +119,7 @@ export default {
     },
 
     clearError() {
-      this.$store.dispatch("clearError");
+      this.$store.dispatch("firebaseAuthStore/clearError");
     }
   }
 };

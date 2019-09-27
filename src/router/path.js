@@ -8,8 +8,8 @@ Vue.use(Router);
 const routerOptions = [
   {
     path: "/",
-    name: "home",
-    component: "components/HelloWorld"
+    name: "postsummary",
+    component: "components/frontend/post/PostSummary"
   },
   {
     path: "/signin",
@@ -28,8 +28,8 @@ const routerOptions = [
   {
     path: "/profile",
     name: "profile",
-    component: "components/user/Profile",
-    meta: { navbarLayout: "dashboard" },
+    component: "components/backend/Profile",
+    meta: { navbarLayout: "backend" },
     beforeEnter: authFirebaseRoute
   }
 ];

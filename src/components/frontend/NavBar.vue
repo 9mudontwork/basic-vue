@@ -6,10 +6,11 @@
       <div class="flex-grow-1"></div>
 
       <v-toolbar-items v-if="userSignedIn">
+        <!-- user menu -->
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn text v-on="on">
-              aaaa
+              {{user.email}}
               <v-icon right>mdi-menu-down</v-icon>
             </v-btn>
           </template>
@@ -37,6 +38,7 @@
         </v-menu>
       </v-toolbar-items>
 
+      <!-- auth menu -->
       <div v-else>
         <v-btn text v-for="item in authMenu" :key="item.title" :to="item.link" :class="item.class">
           <v-icon left>{{item.icon}}</v-icon>
@@ -52,22 +54,26 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
-  // methods
+  data() {
+    return {};
+  },
   methods: {
     doSignOut() {
-      this.$store.dispatch("signOut");
+      this.$store.dispatch("firebaseAuthStore/signOut");
     }
   },
+  computed: mapState({
+    user: state => state.firebaseAuthStore.user,
 
-  // computed
-  computed: {
     titleBar() {
       return this.$store.getters.titleBar;
     },
 
     userSignedIn() {
-      const user = this.$store.getters["user"];
+      const user = this.user;
       if (user == null || user == undefined) {
         return false;
       } else {
@@ -101,6 +107,13 @@ export default {
         }
       ];
       return this.userSignedIn ? menuItems : [];
+    }
+  }),
+  watch: {
+    user(value) {
+      if (value !== null && value !== undefined) {
+        return this.user;
+      }
     }
   }
 };

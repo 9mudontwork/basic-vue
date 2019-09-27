@@ -1,11 +1,9 @@
 import firebase from "./firebaseInit";
 
-const firestoreDb = firebase.firestore();
+const firebaseFirestore = firebase.firestore();
 
-firestoreDb.settings({
-  timestampsInSnapshots: true
-});
+firebaseFirestore.settings({});
 
-firestoreDb.enablePersistence();
+firebaseFirestore.enablePersistence();
 
-export default firestoreDb;
+export default firebaseFirestore;

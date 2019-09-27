@@ -14,7 +14,7 @@ export default {
 
   computed: {
     userSignedIn() {
-      const user = this.$store.getters["user"];
+      const user = this.$store.getters.user;
       return user == null || user == undefined ? false : true;
     },
 

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <form class="form-signin" autocomplete="off" v-on:submit.prevent="validateBeforeSubmit">
+    <form class="form-signin" autocomplete="off" v-on:submit.prevent="validateBeforeSignIn">
       <div class="text-center mb-4">
         <h1 class="display-1 font-weight-bold mb-3">Sign In</h1>
       </div>
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
@@ -59,10 +61,10 @@ export default {
         email: this.email,
         password: this.password
       };
-      this.$store.dispatch("signIn", user);
+      this.$store.dispatch("firebaseAuthStore/signIn", user);
     },
 
-    validateBeforeSubmit() {
+    validateBeforeSignIn() {
       this.$validator
         .validateAll({
           email: this.email,
@@ -76,32 +78,20 @@ export default {
     },
 
     clearError() {
-      this.$store.dispatch("clearError");
+      this.$store.dispatch("firebaseAuthStore/clearError");
     }
   },
 
-  computed: {
-    user() {
-      return this.$store.getters.user;
-    },
-
-    error() {
-      return this.$store.getters.error;
-    },
-
-    status() {
-      return this.$store.getters.status;
-    },
-
-    loading() {
-      return this.$store.getters.loading;
-    }
-  },
+  computed: mapState({
+    user: state => state.firebaseAuthStore.user,
+    error: state => state.firebaseAuthStore.error,
+    loading: state => state.firebaseAuthStore.loading
+  }),
 
   watch: {
     user(value) {
       if (value !== null && value !== undefined) {
-        this.$router.push("/profile");
+        this.$router.push("/");
       }
     }
   }

@@ -1,85 +1,121 @@
 import firebase from "firebase";
 import router from "@/router/path";
+import store from "../../index";
+import firebaseFirestore from "@/configs/firebase/firebaseFirestore";
 
 export default {
-  state: {
-    user: null
-  },
+  namespaced: true,
 
+  state: {
+    user: null,
+    loading: false,
+    error: null
+  },
+  getters: {
+    user: state => state.user,
+    loading: state => state.loading,
+    error: state => state.error
+  },
   mutations: {
-    setUser(state, payload) {
-      state.user = payload;
+    setState(state, payload) {
+      for (let value in payload) {
+        state[value] = payload[value];
+      }
+    },
+    setUser(state, responseFirebaseUserInfo) {
+      state.user = responseFirebaseUserInfo;
     }
   },
-
   actions: {
-    signIn({ commit }, payload) {
-      commit("setLoading", true);
-      commit("clearError");
+    clearError({ commit }) {
+      commit("setState", { error: null });
+    },
 
+    autoSignIn({ commit }, responseFirebaseUserInfo) {
+      if (!responseFirebaseUserInfo) return;
+
+      store.dispatch(
+        "firestoreUserStore/getFirestoreUserDocument",
+        responseFirebaseUserInfo.uid
+      );
+
+      commit("setUser", responseFirebaseUserInfo);
+    },
+
+    signIn({ commit }, signInData) {
+      commit("setState", {
+        loading: true,
+        error: null
+      });
       firebase
         .auth()
-        .signInWithEmailAndPassword(payload.email, payload.password)
+        .signInWithEmailAndPassword(signInData.email, signInData.password)
         .then(response => {
-          commit("setLoading", false);
-          commit("setStatus", "success");
-          commit("setUser", response);
+          commit("setState", {
+            loading: false
+          });
+          commit("setUser", response.user);
         })
         .catch(error => {
-          commit("setLoading", false);
-          commit("setStatus", "fail");
-          commit("setError", error);
+          commit("setState", {
+            loading: false,
+            error: error
+          });
         });
     },
 
     signOut({ commit }) {
-      commit("setLoading", true);
-      commit("clearError");
-
+      commit("setState", {
+        loading: true,
+        error: null
+      });
       firebase
         .auth()
         .signOut()
         .then(() => {
           commit("setUser", null);
-          commit("setLoading", false);
-          commit("setStatus", "success");
-
+          commit("setState", {
+            loading: false
+          });
           router.push("/signin");
         })
         .catch(error => {
-          commit("setLoading", false);
-          commit("setStatus", "fail");
-          commit("setError", error);
+          commit("setState", {
+            loading: false,
+            error: error
+          });
         });
     },
 
-    autoSignIn({ commit }, payload) {
-      commit("setUser", payload);
-    },
-
-    signUp({ commit }, payload) {
-      commit("setLoading", true);
-      commit("clearError");
-
+    signUp({ commit }, signUpData) {
+      commit("setState", {
+        loading: true,
+        error: null
+      });
       firebase
         .auth()
-        .createUserWithEmailAndPassword(payload.email, payload.password)
+        .createUserWithEmailAndPassword(signUpData.email, signUpData.password)
         .then(response => {
-          commit("setLoading", false);
-          commit("setStatus", "success");
-          commit("setUser", response);
+          firebaseFirestore
+            .collection("users")
+            .doc(response.user.uid)
+            .set({
+              uid: response.user.uid,
+              email: signUpData.email,
+              role: "user",
+              created_date: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          commit("setState", {
+            loading: false
+          });
+          commit("setUser", response.user);
         })
         .catch(error => {
-          commit("setLoading", false);
-          commit("setStatus", "fail");
-          commit("setError", error);
+          commit("setState", {
+            loading: false,
+            error: error
+          });
         });
-    }
-  },
-
-  getters: {
-    user(state) {
-      return state.user;
     }
   }
 };

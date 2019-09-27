@@ -16,7 +16,7 @@
             <v-form ref="form" autocomplete="off">
               <v-row>
                 <v-col cols="12" sm="6">
-                  <v-text-field label="Name" required></v-text-field>
+                  <v-text-field v-model="name" label="Name" required></v-text-field>
                 </v-col>
 
                 <v-col cols="12" sm="6">
@@ -33,7 +33,6 @@
                     v-model="modalDatePicker"
                     :return-value.sync="date"
                     persistent
-                    full-width
                     width="290px"
                   >
                     <template v-slot:activator="{ on }">
@@ -96,17 +95,15 @@ export default {
       ],
       right: null,
       date: new Date().toISOString().substr(0, 10),
-      modalDatePicker: false
+      modalDatePicker: false,
+
+      name: null
     };
   },
 
-  computed: {
-    // ages() {
-    //   return Array(108)
-    //     .fill(0)
-    //     .map((e, i) => i + 13);
-    // }
-  }
+  created() {},
+
+  computed: {}
 };
 </script>
 

@@ -12,8 +12,8 @@ const navbarLayout = [
     component: "components/frontend/NavBar"
   },
   {
-    name: "navbar-dashboard",
-    component: "components/dashboard/NavBar"
+    name: "navbar-backend",
+    component: "components/backend/NavBar"
   }
 ];
 
@@ -31,7 +31,7 @@ const unSignIn = firebase.auth().onAuthStateChanged(user => {
     vuetify,
     render: h => h(App),
     created() {
-      this.$store.dispatch("autoSignIn", user);
+      this.$store.dispatch("firebaseAuthStore/autoSignIn", user);
     }
   }).$mount("#app");
   unSignIn();

@@ -1,5 +1,5 @@
 export default {
-  //   namespaced: true,
+  namespaced: true,
 
   state: {
     titleBar: "Basic Vue",
@@ -23,6 +23,11 @@ export default {
     },
     clearError(state) {
       state.error = null;
+    },
+    setState(state, payload) {
+      for (let value in payload) {
+        state.value = payload[value];
+      }
     }
   },
 

@@ -22,6 +22,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+    <!-- end drawer menu -->
 
     <v-app-bar app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
@@ -75,7 +76,7 @@
         </v-btn>
       </div>
     </v-app-bar>
-    
+
     <v-content>
       <slot></slot>
     </v-content>
@@ -87,26 +88,27 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
       drawer: null
     };
   },
-
   methods: {
     doSignOut() {
-      this.$store.dispatch("signOut");
+      this.$store.dispatch("firebaseAuthStore/signOut");
     }
   },
+  computed: mapState({
+    user: state => state.firebaseAuthStore.user,
 
-  computed: {
     titleBar() {
       return this.$store.getters.titleBar;
     },
 
     userSignedIn() {
-      const user = this.$store.getters["user"];
+      const user = this.user;
       if (user == null || user == undefined) {
         return false;
       } else {
@@ -148,6 +150,6 @@ export default {
       ];
       return this.userSignedIn ? menuItems : [];
     }
-  }
+  })
 };
 </script>
