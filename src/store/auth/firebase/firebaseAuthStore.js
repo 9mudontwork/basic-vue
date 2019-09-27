@@ -9,12 +9,14 @@ export default {
   state: {
     user: null,
     loading: false,
-    error: null
+    error: null,
+    status: null
   },
   getters: {
     user: state => state.user,
     loading: state => state.loading,
-    error: state => state.error
+    error: state => state.error,
+    status: state => state.status
   },
   mutations: {
     setState(state, payload) {
@@ -24,18 +26,21 @@ export default {
     },
     setUser(state, responseFirebaseUserInfo) {
       state.user = responseFirebaseUserInfo;
+    },
+    unsetUser(state) {
+      state.user = null;
     }
   },
   actions: {
     clearError({ commit }) {
-      commit("setState", { error: null });
+      commit("setState", { error: null, status: null });
     },
 
     autoSignIn({ commit }, responseFirebaseUserInfo) {
       if (!responseFirebaseUserInfo) return;
 
       store.dispatch(
-        "firestoreUserStore/getFirestoreUserDocument",
+        "firestoreUserStore/getUserDocument",
         responseFirebaseUserInfo.uid
       );
 
@@ -45,21 +50,25 @@ export default {
     signIn({ commit }, signInData) {
       commit("setState", {
         loading: true,
-        error: null
+        error: null,
+        status: "loading before signin"
       });
       firebase
         .auth()
         .signInWithEmailAndPassword(signInData.email, signInData.password)
         .then(response => {
-          commit("setState", {
-            loading: false
-          });
+          commit("setState", { loading: false, status: "signin success" });
+          store.dispatch(
+            "firestoreUserStore/getUserDocument",
+            response.user.uid
+          );
           commit("setUser", response.user);
         })
         .catch(error => {
           commit("setState", {
             loading: false,
-            error: error
+            error: error,
+            status: `error = ${error}`
           });
         });
     },
@@ -73,10 +82,9 @@ export default {
         .auth()
         .signOut()
         .then(() => {
-          commit("setUser", null);
-          commit("setState", {
-            loading: false
-          });
+          commit("unsetUser");
+          store.commit("firestoreUserStore/unsetUserDocument");
+          commit("setState", { loading: false });
           router.push("/signin");
         })
         .catch(error => {
@@ -90,7 +98,8 @@ export default {
     signUp({ commit }, signUpData) {
       commit("setState", {
         loading: true,
-        error: null
+        error: null,
+        status: "loading before signup"
       });
       firebase
         .auth()
@@ -102,18 +111,22 @@ export default {
             .set({
               uid: response.user.uid,
               email: signUpData.email,
+              display_name: signUpData.email,
               role: "user",
               created_date: firebase.firestore.FieldValue.serverTimestamp()
             });
-          commit("setState", {
-            loading: false
-          });
+          commit("setState", { loading: false, status: "signup success" });
+          store.dispatch(
+            "firestoreUserStore/getUserDocument",
+            response.user.uid
+          );
           commit("setUser", response.user);
         })
         .catch(error => {
           commit("setState", {
             loading: false,
-            error: error
+            error: error,
+            status: `error = ${error}`
           });
         });
     }

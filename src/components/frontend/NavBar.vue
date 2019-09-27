@@ -10,7 +10,7 @@
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn text v-on="on">
-              {{user.email}}
+              {{userDocument.display_name}}
               <v-icon right>mdi-menu-down</v-icon>
             </v-btn>
           </template>
@@ -66,15 +66,12 @@ export default {
     }
   },
   computed: mapState({
-    user: state => state.firebaseAuthStore.user,
-
-    titleBar() {
-      return this.$store.getters.titleBar;
-    },
+    userDocument: state => state.firestoreUserStore.userDocument,
+    titleBar: state => state.globalStore.titleBar,
 
     userSignedIn() {
-      const user = this.user;
-      if (user == null || user == undefined) {
+      const userDocument = this.userDocument;
+      if (userDocument == null || userDocument == undefined) {
         return false;
       } else {
         return true;
@@ -110,9 +107,9 @@ export default {
     }
   }),
   watch: {
-    user(value) {
+    userDocument(value) {
       if (value !== null && value !== undefined) {
-        return this.user;
+        return this.userDocument;
       }
     }
   }

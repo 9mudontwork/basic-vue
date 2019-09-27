@@ -101,7 +101,9 @@ export default {
     };
   },
 
-  created() {},
+  beforeCreate() {
+    return this.$store.dispatch("globalStore/setTitleBar", "Profile Page");
+  },
 
   computed: {}
 };

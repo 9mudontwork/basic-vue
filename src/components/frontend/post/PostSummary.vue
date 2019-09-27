@@ -119,6 +119,9 @@ export default {
         }
       ]
     };
+  },
+  beforeCreate() {
+    return this.$store.dispatch("globalStore/setTitleBar", "Basic Vue");
   }
 };
 </script>

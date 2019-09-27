@@ -57,11 +57,11 @@ export default {
 
   methods: {
     doSignIn() {
-      const user = {
+      const signInData = {
         email: this.email,
         password: this.password
       };
-      this.$store.dispatch("firebaseAuthStore/signIn", user);
+      this.$store.dispatch("firebaseAuthStore/signIn", signInData);
     },
 
     validateBeforeSignIn() {

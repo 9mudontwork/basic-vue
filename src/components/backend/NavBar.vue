@@ -3,7 +3,7 @@
     <v-navigation-drawer app v-model="drawer">
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="title">AAAAA</v-list-item-title>
+          <v-list-item-title class="title">{{userDocument.display_name}}</v-list-item-title>
           <v-list-item-subtitle>Admin</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -41,7 +41,7 @@
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn text v-on="on">
-              aaaa
+              {{userDocument.display_name}}
               <v-icon right>mdi-menu-down</v-icon>
             </v-btn>
           </template>
@@ -101,15 +101,12 @@ export default {
     }
   },
   computed: mapState({
-    user: state => state.firebaseAuthStore.user,
-
-    titleBar() {
-      return this.$store.getters.titleBar;
-    },
+    userDocument: state => state.firestoreUserStore.userDocument,
+    titleBar: state => state.globalStore.titleBar,
 
     userSignedIn() {
-      const user = this.user;
-      if (user == null || user == undefined) {
+      const userDocument = this.userDocument;
+      if (userDocument == null || userDocument == undefined) {
         return false;
       } else {
         return true;
@@ -150,6 +147,13 @@ export default {
       ];
       return this.userSignedIn ? menuItems : [];
     }
-  })
+  }),
+  watch: {
+    userDocument(value) {
+      if (value !== null && value !== undefined) {
+        return this.userDocument;
+      }
+    }
+  }
 };
 </script>

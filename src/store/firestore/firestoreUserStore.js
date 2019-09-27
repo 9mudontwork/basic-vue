@@ -2,8 +2,10 @@ import firebaseFirestore from "@/configs/firebase/firebaseFirestore";
 
 const userCollection = "users";
 export default {
+  namespaced: true,
+
   state: {
-    firestoreUserDocument: null,
+    userDocument: null,
     loading: false,
     error: null
   },
@@ -14,13 +16,16 @@ export default {
         state[value] = payload[value];
       }
     },
-    setFirestoreUserDocument(state, firestoreUserDocument) {
-      state.firestoreUserDocument = firestoreUserDocument;
+    setUserDocument(state, userDocument) {
+      state.userDocument = userDocument;
+    },
+    unsetUserDocument(state) {
+      state.userDocument = null;
     }
   },
 
   actions: {
-    getFirestoreUserDocument({ commit }, uid) {
+    getUserDocument({ commit }, uid) {
       commit("setState", {
         loading: true,
         error: null
@@ -30,7 +35,7 @@ export default {
         .doc(uid)
         .get()
         .then(doc => {
-          commit("setFirestoreUserDocument", doc.data());
+          commit("setUserDocument", doc.data());
           commit("setState", {
             loading: false
           });
@@ -45,8 +50,8 @@ export default {
   },
 
   getters: {
-    firestoreUserDocument(state) {
-      return state.firestoreUserDocument;
+    userDocument(state) {
+      return state.userDocument;
     }
   }
 };
