@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-app-bar>
+    <v-app-bar dark color="grey darken-4">
       <v-toolbar-title v-text="titleBar"></v-toolbar-title>
 
       <div class="flex-grow-1"></div>
 
+      <!-- user menu -->
       <v-toolbar-items v-if="userSignedIn">
-        <!-- user menu -->
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn text v-on="on">

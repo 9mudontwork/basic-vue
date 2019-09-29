@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :style="{background: $vuetify.theme.themes[theme].aaa}">
     <component :is="navbarLayout">
       <router-view></router-view>
     </component>
@@ -13,6 +13,10 @@ export default {
   name: "App",
 
   computed: {
+    theme() {
+      return this.$vuetify.theme.dark ? "dark" : "light";
+    },
+
     userSignedIn() {
       const user = this.$store.getters.user;
       return user == null || user == undefined ? false : true;
