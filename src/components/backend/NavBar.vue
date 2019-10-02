@@ -37,7 +37,8 @@
 
       <div class="flex-grow-1"></div>
 
-      <v-toolbar-items v-if="userSignedIn">
+      <!-- user menu -->
+      <v-toolbar-items v-if="userLoggedIn">
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn text v-on="on">
@@ -57,7 +58,7 @@
 
             <v-divider></v-divider>
 
-            <v-list-item @click="doSignOut">
+            <v-list-item @click="doLogout">
               <v-list-item-icon>
                 <v-icon>mdi-logout-variant</v-icon>
               </v-list-item-icon>
@@ -69,6 +70,11 @@
         </v-menu>
       </v-toolbar-items>
 
+      <div v-else-if="loading">
+        <v-progress-circular indeterminate></v-progress-circular>
+      </div>
+
+      <!-- auth menu -->
       <div v-else>
         <v-btn text v-for="item in authMenu" :key="item.title" :to="item.link" :class="item.class">
           <v-icon left>{{item.icon}}</v-icon>
@@ -89,22 +95,27 @@
 
 <script>
 import { mapState } from "vuex";
+
 export default {
   data() {
     return {
       drawer: null
     };
   },
+
   methods: {
-    doSignOut() {
-      this.$store.dispatch("firebaseAuthStore/signOut");
+    doLogout() {
+      this.$store.dispatch("firebaseAuthStore/logout");
     }
   },
+
   computed: mapState({
+    user: state => state.firebaseAuthStore.user,
     userDocument: state => state.firestoreUserStore.userDocument,
+    loading: state => state.firestoreUserStore.loading,
     titleBar: state => state.globalStore.titleBar,
 
-    userSignedIn() {
+    userLoggedIn() {
       const userDocument = this.userDocument;
       if (userDocument == null || userDocument == undefined) {
         return false;
@@ -127,7 +138,7 @@ export default {
           link: "/signin"
         }
       ];
-      return this.userSignedIn ? [] : menuItems;
+      return this.userLoggedIn ? [] : menuItems;
     },
 
     userMenu() {
@@ -138,22 +149,15 @@ export default {
           link: "/profile"
         }
       ];
-      return this.userSignedIn ? menuItems : [];
+      return this.userLoggedIn ? menuItems : [];
     },
 
     dashboardMenu() {
       let menuItems = [
         { title: "Profile", icon: "mdi-account", link: "/profile" }
       ];
-      return this.userSignedIn ? menuItems : [];
+      return this.userLoggedIn ? menuItems : [];
     }
-  }),
-  watch: {
-    userDocument(value) {
-      if (value !== null && value !== undefined) {
-        return this.userDocument;
-      }
-    }
-  }
+  })
 };
 </script>

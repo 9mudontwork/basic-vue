@@ -6,6 +6,8 @@ import VeeValidate from "./plugins/vee-validate";
 import vuetify from "./plugins/vuetify";
 import firebase from "./configs/firebase/firebaseInit";
 
+Vue.config.productionTip = false;
+
 const navbarLayout = [
   {
     name: "navbar-frontend",
@@ -21,9 +23,7 @@ navbarLayout.map(navbar => {
   return Vue.component(navbar.name, () => import(`@/${navbar.component}.vue`));
 });
 
-Vue.config.productionTip = false;
-
-const unSignIn = firebase.auth().onAuthStateChanged(user => {
+const checkLoggedIn = firebase.auth().onAuthStateChanged(user => {
   new Vue({
     router,
     store,
@@ -31,8 +31,12 @@ const unSignIn = firebase.auth().onAuthStateChanged(user => {
     vuetify,
     render: h => h(App),
     created() {
-      this.$store.dispatch("firebaseAuthStore/autoSignIn", user);
+      if (user) {
+        store.dispatch("firebaseAuthStore/setAutoLogin", user);
+        store.dispatch("firestoreUserStore/getUserDocument", user.uid);
+      }
     }
   }).$mount("#app");
-  unSignIn();
+
+  checkLoggedIn();
 });

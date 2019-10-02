@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <form class="form-signin" autocomplete="off" v-on:submit.prevent="validateBeforeSignIn">
+    <form class="form-signin" autocomplete="off" v-on:submit.prevent="validateBeforeLogin">
       <div class="text-center mb-4">
         <h1 class="display-1 font-weight-bold mb-3">Sign In</h1>
       </div>
@@ -55,8 +55,12 @@ export default {
     };
   },
 
+  create() {
+    this.$store.dispatch("globalStore/setTitleBar");
+  },
+
   methods: {
-    doSignIn() {
+    doLogin() {
       const signInData = {
         email: this.email,
         password: this.password
@@ -64,7 +68,7 @@ export default {
       this.$store.dispatch("firebaseAuthStore/signIn", signInData);
     },
 
-    validateBeforeSignIn() {
+    validateBeforeLogin() {
       this.$validator
         .validateAll({
           email: this.email,
@@ -72,7 +76,7 @@ export default {
         })
         .then(result => {
           if (result) {
-            this.doSignIn();
+            this.doLogin();
           }
         });
     },

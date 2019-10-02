@@ -39,6 +39,7 @@ export default {
           commit("setState", {
             loading: false
           });
+          return doc.date();
         })
         .catch(error => {
           commit("setState", {

@@ -1,6 +1,5 @@
 import firebase from "firebase";
-import router from "@/router/path";
-import store from "../../index";
+import store from "@/store/index";
 import firebaseFirestore from "@/configs/firebase/firebaseFirestore";
 
 export default {
@@ -36,14 +35,8 @@ export default {
       commit("setState", { error: null, status: null });
     },
 
-    autoSignIn({ commit }, responseFirebaseUserInfo) {
+    setAutoLogin({ commit }, responseFirebaseUserInfo) {
       if (!responseFirebaseUserInfo) return;
-
-      store.dispatch(
-        "firestoreUserStore/getUserDocument",
-        responseFirebaseUserInfo.uid
-      );
-
       commit("setUser", responseFirebaseUserInfo);
     },
 
@@ -73,7 +66,7 @@ export default {
         });
     },
 
-    signOut({ commit }) {
+    logout({ commit }) {
       commit("setState", {
         loading: true,
         error: null
@@ -85,7 +78,6 @@ export default {
           commit("unsetUser");
           store.commit("firestoreUserStore/unsetUserDocument");
           commit("setState", { loading: false });
-          router.push("/signin");
         })
         .catch(error => {
           commit("setState", {
@@ -116,6 +108,7 @@ export default {
               created_date: firebase.firestore.FieldValue.serverTimestamp()
             });
           commit("setState", { loading: false, status: "signup success" });
+          // บันทึก user ตรงนี้ทำใน cloud function ภายหลังได้
           store.dispatch(
             "firestoreUserStore/getUserDocument",
             response.user.uid

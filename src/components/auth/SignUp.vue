@@ -45,6 +45,7 @@
         <v-btn block type="submit" :disabled="loading" :loading="loading">Sign Up</v-btn>
       </div>
 
+      <!-- alert box -->
       <v-alert
         v-if="error"
         close-text="Close Alert"
@@ -76,7 +77,7 @@ export default {
       if (this.password === this.confirmPassword) {
         return true;
       } else {
-        return "Password and Confirm Password don't match";
+        return false;
       }
     },
 

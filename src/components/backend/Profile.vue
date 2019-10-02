@@ -4,7 +4,7 @@
       <v-col class="d-flex justify-center">
         <v-card class="profile-card">
           <div class="profile-card-header">
-            <v-card class="grey darken-4">
+            <v-card class="">
               <v-card-title>
                 <v-icon large left>mdi-account</v-icon>Profile
               </v-card-title>
@@ -102,7 +102,7 @@ export default {
   },
 
   beforeCreate() {
-    return this.$store.dispatch("globalStore/setTitleBar", "Profile Page");
+    this.$store.dispatch("globalStore/setTitleBar", "Profile Page");
   },
 
   computed: {}

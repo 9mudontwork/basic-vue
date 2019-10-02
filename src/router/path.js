@@ -1,40 +1,46 @@
 import Vue from "vue";
 import Router from "vue-router";
-
-import authFirebaseRoute from "./firebase/authFirebaseRoute";
+import firebase from "firebase";
 
 Vue.use(Router);
 
-const routerOptions = [
+const routesOption = [
   {
     path: "/",
     name: "postsummary",
-    component: "components/frontend/post/PostSummary"
+    component: "components/frontend/post/PostSummary",
+    meta: {}
   },
   {
     path: "/signin",
     name: "signin",
     component: "components/auth/SignIn",
-    meta: { dontSignInAgain: true, navbarLayout: "frontend" },
-    beforeEnter: authFirebaseRoute
+    meta: {
+      checkLoggedIn: true,
+      navbarLayout: "frontend"
+    }
   },
   {
     path: "/signup",
     name: "signup",
     component: "components/auth/SignUp",
-    meta: { dontSignInAgain: true },
-    beforeEnter: authFirebaseRoute
+    meta: {
+      checkLoggedIn: true,
+      navbarLayout: "frontend"
+    }
   },
   {
     path: "/profile",
     name: "profile",
     component: "components/backend/Profile",
-    meta: { navbarLayout: "backend" },
-    beforeEnter: authFirebaseRoute
+    meta: {
+      authRequired: true,
+      navbarLayout: "backend"
+    }
   }
 ];
 
-const routes = routerOptions.map(route => {
+const routes = routesOption.map(route => {
   return {
     path: route.path,
     name: route.name,
@@ -44,10 +50,8 @@ const routes = routerOptions.map(route => {
   };
 });
 
-export default new Router({
+const router = new Router({
   mode: "history",
-  // linkActiveClass: "active",
-  base: process.env.BASE_URL,
   routes: [
     ...routes,
     {
@@ -56,3 +60,29 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  const authRequired = to.matched.some(record => record.meta.authRequired);
+  const loggedIn = to.matched.some(record => record.meta.checkLoggedIn);
+  const user = firebase.auth().currentUser;
+
+  if (authRequired) {
+    if (user) {
+      next();
+    } else {
+      next("/signin");
+    }
+  } else {
+    if (loggedIn) {
+      if (user) {
+        next("/");
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
+  }
+});
+
+export default router;
